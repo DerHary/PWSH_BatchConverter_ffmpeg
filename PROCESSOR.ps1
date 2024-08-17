@@ -1,4 +1,14 @@
-# Define Input Parameters
+########################################################################################
+# PWSH_BatchConverter_ffmpeg
+# Author: DerHary
+# https://github.com/DerHary/
+# Requirements:
+# 	NVIDIA GPU (hwaccel)
+# 	ffmpg (defined in PATH or at least directly call-able with "ffmpg")
+# 	Powershell (tested it with PWSH 7.4)
+########################################################################################
+
+# Define static Parameters and inputs from Templates
 param (
 	# Input Params from Template Script
     [string]$ffmpegArgs,
