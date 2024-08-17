@@ -29,13 +29,15 @@ function Show-ProgressBar {
         [int]$Speed,
         [int]$RemainingFiles
     )
-
+	# Progress bar Chars width
     $width = 50
+	# math the Progressbar
     $progress = [Math]::Round($PercentComplete / 100 * $width)
+	# Define Character for Progressbar (Examples █,#,O,....)
     $bar = ("█" * $progress).PadRight($width)
     
     # Progressbar color
-    $blueBar = "`e[34m$bar`e[0m"
+    $coloredProgressBar = "`e[34m$bar`e[0m"
 
     # Convert speed colors
     if ($Speed -le 10) {
@@ -58,7 +60,7 @@ function Show-ProgressBar {
     $greenText = "[`e[32m$formattedPercentComplete%|$CurrentTime|${formattedBitrate}kb/s|Q:$Quality|SP:$formattedSpeed] [Files:$RemainingFiles]`e[0m]"
     
     # Show Progressbar and Infotext
-    Write-Host -NoNewline "`r[$blueBar] $greenText"
+    Write-Host -NoNewline "`r[$coloredProgressBar] $greenText"
 }
 
 function Get-VideoDuration {
