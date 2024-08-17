@@ -1,4 +1,4 @@
-# Definiere die FFmpeg-Argumente
+# Define ffmpg Parameters
 $ffmpegArgs = @(
     "-c:v hevc_nvenc",
     "-vf scale=-1:720",
@@ -6,21 +6,19 @@ $ffmpegArgs = @(
     "-preset fast",
     "-profile:v main",
     "-level 4.0",
-    "-b:v 800k",
-    "-minrate:v 700k",
-    "-maxrate:v 1400k",
+    "-b:v 600k",
+    "-minrate:v 500k",
+    "-maxrate:v 1000k",
     "-c:a copy"
 ) -join " "
 
 $VideoContainer = ".mp4"
 
-# Verwende $PSScriptRoot, um den Pfad zum Hauptskript zu erstellen
+# Use $PSScriptRoot, to get the path to the Processor Script
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "PROCESSOR.ps1"
 
-# Überprüfen, ob das Hauptskript existiert
+# Check if Processor Script exists
 if (Test-Path $scriptPath) {
-    # Rufe das Hauptskript mit den FFmpeg-Argumenten auf
+    # Call Processor Script
     & "$scriptPath" -ffmpegArgs $ffmpegArgs -VideoContainer $VideoContainer
-} else {
-    Write-Host "Das Skript '$scriptPath' wurde nicht gefunden."
-}
+} else { Write-Host "Das Skript '$scriptPath' wurde nicht gefunden." }

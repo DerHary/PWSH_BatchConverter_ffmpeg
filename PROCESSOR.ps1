@@ -2,6 +2,7 @@
 param (
 	# Input Params from Template Script
     [string]$ffmpegArgs,
+	[string]$VideoContainer,
 	# Directories to get/write Videos (relative!)
     [string]$VideoInputFolder = "source",
     [string]$VideoOutputFolder = "output"
@@ -18,6 +19,7 @@ $VideoOutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $VideoOutputFolder
 Write-Host "Input Folder: $VideoInputFolder"
 Write-Host "Output Folder: $VideoOutputFolder"
 Write-Host "Using FFmpeg arguments: $ffmpegArgs"
+Write-Host "Container Format: $VideoContainer"
 
 # Define the optical Part
 function Show-ProgressBar {
@@ -39,15 +41,15 @@ function Show-ProgressBar {
     # Progressbar color
     $coloredProgressBar = "`e[34m$bar`e[0m"
 
-    # Convert speed colors
+    # Define speed colors (Defined for Info about slow conversions)
     if ($Speed -le 10) {
-        $formattedSpeed = "`e[31m$Speed`e[0m"  # rot
+        $formattedSpeed = "`e[31m$Speed`e[0m"  # red
     } elseif ($Speed -le 20) {
-        $formattedSpeed = "`e[33m$Speed`e[0m"  # gelb
+        $formattedSpeed = "`e[33m$Speed`e[0m"  # yellow
     } elseif ($Speed -le 30) {
-        $formattedSpeed = "`e[92m$Speed`e[0m"  # hellgrün
+        $formattedSpeed = "`e[92m$Speed`e[0m"  # lightgreen
     } else {
-        $formattedSpeed = "`e[96m$Speed`e[0m"  # hellblau
+        $formattedSpeed = "`e[96m$Speed`e[0m"  # lightblue
     }
 
     # always 3 digit Progress (prevent moving line)
@@ -63,6 +65,7 @@ function Show-ProgressBar {
     Write-Host -NoNewline "`r[$coloredProgressBar] $greenText"
 }
 
+# Request Video Duration from Windows (for some Formats we cant get it from ffprobe)
 function Get-VideoDuration {
     param ([string]$FilePath)
     $shell = New-Object -ComObject Shell.Application
@@ -81,15 +84,18 @@ $global:ffmpegProcess = $null
 function CleanUp { if ($global:ffmpegProcess -and -not $global:ffmpegProcess.HasExited) { $global:ffmpegProcess.Kill() } }
 trap { CleanUp; break }
 
+# Collect the Videos for processing
 $videoFiles = Get-ChildItem -Path $VideoInputFolder -Recurse -File -Include $VideoFileTypes
+# Count them
 $totalFiles, $processedFiles = $videoFiles.Count, 0
 
+# Loop through Files and do the Job
 $videoFiles | ForEach-Object {
-    $OutputFileName = $_.BaseName + ".mkv"
+    $OutputFileName = $_.BaseName + $VideoContainer
     $OutputFilePath = Join-Path -Path $VideoOutputFolder -ChildPath $OutputFileName
     Write-Output "Processing file: $($_.FullName)"
     $duration = Get-VideoDuration -FilePath $_.FullName
-    if ($duration -eq 0) { Write-Host "Videolaenge konnte nicht festgestellt werden $($_.FullName). Skippe..."; return }
+    if ($duration -eq 0) { Write-Host "Video lenght could not be determinated: $($_.FullName). Skipped..."; return }
 	# DO THE JOB - FFMPEG Commandline
     $completeArgs = "-hwaccel cuda -i `"$($_.FullName)`" $ffmpegArgs -y `"$OutputFilePath`""
 	# DO THE JOB - FFMPEG Commandline
@@ -118,8 +124,8 @@ $videoFiles | ForEach-Object {
         }
     } finally { CleanUp }
     $processedFiles++
-    Write-Host "`nFertig: $($_.FullName)"
+    Write-Host "`nDONE: $($OutputFileName)"
 }
 
-Write-Host "Konvertierung abgeschlossen!"
+Write-Host "Batch coversion done!"
 pause
