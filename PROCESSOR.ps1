@@ -1,5 +1,8 @@
+# Define Input Parameters
 param (
+	# Input Params from Template Script
     [string]$ffmpegArgs,
+	# Directories to get/write Videos (relative!)
     [string]$VideoInputFolder = "source",
     [string]$VideoOutputFolder = "output"
 )
@@ -7,13 +10,16 @@ param (
 # possible Filetypes
 $VideoFileTypes = '*.mkv', '*.mp4', '*.webm', '*.mov'
 
+# Build input and output Path with relative from Script Root
 $VideoInputFolder = Join-Path -Path $PSScriptRoot -ChildPath $VideoInputFolder
 $VideoOutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $VideoOutputFolder
 
+# Print the Parameters
 Write-Host "Input Folder: $VideoInputFolder"
 Write-Host "Output Folder: $VideoOutputFolder"
 Write-Host "Using FFmpeg arguments: $ffmpegArgs"
 
+# Define the optical Part
 function Show-ProgressBar {
     param (
         [int]$PercentComplete,
