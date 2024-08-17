@@ -31,6 +31,9 @@ Write-Host "Output Folder: $VideoOutputFolder"
 Write-Host "Using FFmpeg arguments: $ffmpegArgs"
 Write-Host "Container Format: $VideoContainer"
 
+Write-Host "Conversion starting in 10 Seconds - close the Window to abbort"
+Start-Sleep -Seconds 10
+
 # Define the optical Part
 function Show-ProgressBar {
     param (
