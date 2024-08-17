@@ -15,7 +15,7 @@ $ffmpegArgs = @(
 ) -join " "
 
 # Define output Container (Exampes: .mkv or .mp4)
-$VideoContainer = ".mp4"
+$VideoContainer = ".mkv"
 
 
 
