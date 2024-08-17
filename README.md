@@ -5,6 +5,12 @@ You define Input and output Dir and start the conversion with a Template File.
 
 And the best thing: It has also a **Status Bar**! ;)
 
+
+
+[![preview](https://raw.githubusercontent.com/DerHary/PWSH_BatchConverter_ffmpeg/main/additional_files/preview.webp "preview")](https://raw.githubusercontent.com/DerHary/PWSH_BatchConverter_ffmpeg/main/additional_files/preview.webp "preview")
+
+
+
 ## Why this?
 The inspiration for this was, that i dont want to convert my Videos with clumpy Frontends.
 So my first intent was to create the Batch conversion via Scripts.
