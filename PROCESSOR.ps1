@@ -28,11 +28,12 @@ $VideoOutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $VideoOutputFolder
 # Print the Parameters
 Write-Host "Input Folder: $VideoInputFolder"
 Write-Host "Output Folder: $VideoOutputFolder"
-Write-Host "Using FFmpeg arguments: $ffmpegArgs"
+Write-Host "Using FFmpeg arguments:"
+Write-Host "$ffmpegArgs"
 Write-Host "Container Format: $VideoContainer"
 
-Write-Host "Conversion starting in 10 Seconds - close the Window to abbort"
-Start-Sleep -Seconds 10
+Write-Host "Conversion starting in 3 Seconds - close the Window to abbort"
+Start-Sleep -Seconds 3
 
 # Define the optical Part
 function Show-ProgressBar {
