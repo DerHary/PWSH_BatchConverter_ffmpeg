@@ -19,7 +19,7 @@ param (
 )
 
 # possible Filetypes
-$VideoFileTypes = '*.mkv', '*.mp4', '*.webm', '*.mov'
+$VideoFileTypes = '*.mkv', '*.mp4', '*.webm', '*.mov', '*.avi'
 
 # Build input and output Path with relative from Script Root
 $VideoInputFolder = Join-Path -Path $PSScriptRoot -ChildPath $VideoInputFolder
